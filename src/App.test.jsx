@@ -37,7 +37,8 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     fireEvent.click(botContacts[0]);
 
     // Type and send message
-    const messageInput = screen.getByPlaceholderText('Type a message');
+    const messageInput = screen.getByLabelText('Type a message');
+    expect(messageInput).toBeInTheDocument();
     fireEvent.change(messageInput, { target: { value: 'hello' } });
 
     const sendButton = screen.getByTitle('Send Message');

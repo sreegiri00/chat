@@ -448,10 +448,11 @@ export default function ChatArea() {
             <form onSubmit={handleSendText} className="flex-1 flex items-center">
               <input
                 type="text"
+                aria-label="Type a message"
                 placeholder="Type a message"
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
-                className="w-full bg-white dark:bg-[#2a3942] text-gray-900 dark:text-[#e9edef] placeholder-[#54656f] dark:placeholder-[#8696a0] px-4 py-2 rounded-lg text-sm focus:outline-none"
+                className="w-full bg-white dark:bg-[#2a3942] text-gray-900 dark:text-[#e9edef] placeholder-[#54656f] dark:placeholder-[#8696a0] px-4 py-2 rounded-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a884]"
               />
             </form>
 
