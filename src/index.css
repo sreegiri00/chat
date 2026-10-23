@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Scrollbar for WhatsApp style */
+::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(134, 150, 160, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(134, 150, 160, 0.5);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Chat Background Patterns */
+.bg-whatsapp-doodle-dark {
+  background-color: #0b141a;
+  background-image: radial-gradient(#111b21 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.bg-whatsapp-doodle-light {
+  background-color: #efeae2;
+  background-image: radial-gradient(#e0d9cd 1px, transparent 0);
+  background-size: 24px 24px;
+}
