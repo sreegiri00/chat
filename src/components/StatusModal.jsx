@@ -63,7 +63,6 @@ export default function StatusModal() {
       {/* Close Button */}
       <button
         onClick={() => setActiveStatusViewer(null)}
-        aria-label="Close status viewer"
         className="absolute top-4 right-4 text-white hover:text-gray-300 p-2 z-50 rounded-full bg-white/10"
       >
         <X className="w-6 h-6" />
@@ -117,7 +116,6 @@ export default function StatusModal() {
               {stories.length > 0 && (
                 <button
                   onClick={() => setIsPaused(!isPaused)}
-                  aria-label={isPaused ? "Play story" : "Pause story"}
                   className="p-1.5 rounded-full hover:bg-white/20 text-white"
                 >
                   {isPaused ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
@@ -163,7 +161,6 @@ export default function StatusModal() {
               {currentStoryIndex > 0 && (
                 <button
                   onClick={handlePrevStory}
-                  aria-label="Previous story"
                   className="absolute left-2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60"
                 >
                   <ChevronLeft className="w-6 h-6" />
@@ -172,7 +169,6 @@ export default function StatusModal() {
               {currentStoryIndex < stories.length - 1 && (
                 <button
                   onClick={handleNextStory}
-                  aria-label="Next story"
                   className="absolute right-2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60"
                 >
                   <ChevronRight className="w-6 h-6" />
