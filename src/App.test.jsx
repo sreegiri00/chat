@@ -63,4 +63,17 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Your Name')).toBeInTheDocument();
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument();
   });
+
+  it('renders StatusModal controls with accessible labels when status viewer is active', () => {
+    render(<App />);
+    const statusBtn = screen.getByTitle('Status Updates');
+    fireEvent.click(statusBtn);
+
+    expect(screen.getByRole('button', { name: 'Close status viewer' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Pause story' })).toBeInTheDocument();
+
+    const closeBtn = screen.getByRole('button', { name: 'Close status viewer' });
+    fireEvent.click(closeBtn);
+    expect(screen.queryByRole('button', { name: 'Close status viewer' })).not.toBeInTheDocument();
+  });
 });
