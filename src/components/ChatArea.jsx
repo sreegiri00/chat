@@ -169,6 +169,7 @@ export default function ChatArea() {
             onClick={() => setActiveCall({ type: 'video', contact: activeContact })}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title="Video Call"
+            aria-label="Video Call"
           >
             <Video className="w-5 h-5" />
           </button>
@@ -176,6 +177,7 @@ export default function ChatArea() {
             onClick={() => setActiveCall({ type: 'audio', contact: activeContact })}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title="Voice Call"
+            aria-label="Voice Call"
           >
             <Phone className="w-5 h-5" />
           </button>
@@ -185,6 +187,7 @@ export default function ChatArea() {
               showChatSearch ? 'text-[#00a884]' : ''
             }`}
             title="Search in Chat"
+            aria-label="Search in Chat"
           >
             <Search className="w-5 h-5" />
           </button>
@@ -192,6 +195,7 @@ export default function ChatArea() {
             onClick={() => setActiveDrawer('contact_info')}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title="Contact Info"
+            aria-label="Contact Info"
           >
             <MoreVertical className="w-5 h-5" />
           </button>
@@ -209,7 +213,7 @@ export default function ChatArea() {
             onChange={(e) => setInChatSearchQuery(e.target.value)}
             className="flex-1 bg-transparent border-none text-gray-900 dark:text-[#d1d7db] placeholder-gray-500 focus:outline-none"
           />
-          <button onClick={() => { setShowChatSearch(false); setInChatSearchQuery(''); }} className="p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+          <button onClick={() => { setShowChatSearch(false); setInChatSearchQuery(''); }} className="p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" aria-label="Close search">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -276,6 +280,7 @@ export default function ChatArea() {
                     <button
                       onClick={() => setActiveAudioPlaying(activeAudioPlaying === msg.id ? null : msg.id)}
                       className="p-2 rounded-full bg-[#00a884] text-white hover:bg-emerald-600 transition-colors"
+                      aria-label={activeAudioPlaying === msg.id ? "Pause voice note" : "Play voice note"}
                     >
                       {activeAudioPlaying === msg.id ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
                     </button>
@@ -335,6 +340,7 @@ export default function ChatArea() {
                 <button
                   onClick={() => setActiveMessageMenu(activeMessageMenu === msg.id ? null : msg.id)}
                   className="absolute top-1 right-1 p-0.5 rounded text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/10 dark:hover:bg-white/10"
+                  aria-label="Message options"
                 >
                   <ChevronDown className="w-4 h-4" />
                 </button>
@@ -415,6 +421,7 @@ export default function ChatArea() {
                 onClick={() => setIsRecording(false)}
                 className="text-gray-500 hover:text-red-500"
                 title="Cancel Recording"
+                aria-label="Cancel Recording"
               >
                 <Trash2 className="w-5 h-5" />
               </button>
@@ -422,6 +429,7 @@ export default function ChatArea() {
                 onClick={handleSendVoiceNote}
                 className="bg-[#00a884] text-white p-1.5 rounded-full hover:bg-emerald-600"
                 title="Send Voice Note"
+                aria-label="Send Voice Note"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -433,6 +441,7 @@ export default function ChatArea() {
               onClick={() => { setShowEmojiPicker(!showEmojiPicker); setShowAttachmentMenu(false); }}
               className="p-2 text-[#54656f] dark:text-[#8696a0] hover:text-gray-700 dark:hover:text-[#e9edef] rounded-full transition-colors"
               title="Emoji"
+              aria-label="Emoji"
             >
               <Smile className="w-6 h-6" />
             </button>
@@ -441,6 +450,7 @@ export default function ChatArea() {
               onClick={() => { setShowAttachmentMenu(!showAttachmentMenu); setShowEmojiPicker(false); }}
               className="p-2 text-[#54656f] dark:text-[#8696a0] hover:text-gray-700 dark:hover:text-[#e9edef] rounded-full transition-colors"
               title="Attach File"
+              aria-label="Attach File"
             >
               <Paperclip className="w-6 h-6" />
             </button>
@@ -449,6 +459,7 @@ export default function ChatArea() {
               <input
                 type="text"
                 placeholder="Type a message"
+                aria-label="Type a message"
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
                 className="w-full bg-white dark:bg-[#2a3942] text-gray-900 dark:text-[#e9edef] placeholder-[#54656f] dark:placeholder-[#8696a0] px-4 py-2 rounded-lg text-sm focus:outline-none"
@@ -460,6 +471,7 @@ export default function ChatArea() {
                 onClick={handleSendText}
                 className="p-2.5 bg-[#00a884] text-white rounded-full hover:bg-emerald-600 transition-colors shadow-sm"
                 title="Send Message"
+                aria-label="Send Message"
               >
                 <Send className="w-5 h-5" />
               </button>
@@ -468,6 +480,7 @@ export default function ChatArea() {
                 onClick={() => setIsRecording(true)}
                 className="p-2 text-[#54656f] dark:text-[#8696a0] hover:text-gray-700 dark:hover:text-[#e9edef] rounded-full transition-colors"
                 title="Voice Recording"
+                aria-label="Voice Recording"
               >
                 <Mic className="w-6 h-6" />
               </button>

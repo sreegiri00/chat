@@ -63,4 +63,24 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Your Name')).toBeInTheDocument();
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument();
   });
+
+  it('has correct ARIA labels on icon buttons and filter tabs for screen reader accessibility', () => {
+    render(<App />);
+
+    expect(screen.getByRole('button', { name: /Profile Settings/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Status Updates/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Switch to (Light|Dark) Mode/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /New Chat/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Filter by All/i })).toBeInTheDocument();
+
+    const botContacts = screen.getAllByText('WhatsApp AI Assistant');
+    fireEvent.click(botContacts[0]);
+
+    expect(screen.getByRole('button', { name: /Video Call/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Voice Call/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Search in Chat/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Emoji/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Attach File/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Voice Recording/i })).toBeInTheDocument();
+  });
 });
