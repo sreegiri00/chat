@@ -63,4 +63,24 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Your Name')).toBeInTheDocument();
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument();
   });
+
+  it('toggles emoji picker with aria attributes and closes on Escape key', () => {
+    render(<App />);
+    // Select chat to open ChatArea
+    const botContacts = screen.getAllByText('WhatsApp AI Assistant');
+    fireEvent.click(botContacts[0]);
+
+    const emojiBtn = screen.getByLabelText('Toggle emoji picker');
+    expect(emojiBtn).toHaveAttribute('aria-expanded', 'false');
+
+    // Open emoji picker
+    fireEvent.click(emojiBtn);
+    expect(emojiBtn).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('region', { name: 'Emoji picker' })).toBeInTheDocument();
+
+    // Press Escape key to close
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(emojiBtn).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('region', { name: 'Emoji picker' })).not.toBeInTheDocument();
+  });
 });
