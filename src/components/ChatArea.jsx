@@ -57,6 +57,18 @@ export default function ChatArea() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [activeMessages.length, activeChatId]);
 
+  // Keyboard navigation - close pickers on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (showEmojiPicker) setShowEmojiPicker(false);
+        if (showAttachmentMenu) setShowAttachmentMenu(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showEmojiPicker, showAttachmentMenu]);
+
   // Handle Voice Recording timer
   useEffect(() => {
     if (isRecording) {
@@ -376,11 +388,16 @@ export default function ChatArea() {
 
       {/* Emoji Picker Popover */}
       {showEmojiPicker && (
-        <div className="absolute bottom-16 left-4 bg-white dark:bg-[#202c33] border border-gray-200 dark:border-[#222d34] rounded-lg shadow-xl p-3 z-30 grid grid-cols-8 gap-2 w-72">
+        <div
+          role="region"
+          aria-label="Emoji picker"
+          className="absolute bottom-16 left-4 bg-white dark:bg-[#202c33] border border-gray-200 dark:border-[#222d34] rounded-lg shadow-xl p-3 z-30 grid grid-cols-8 gap-2 w-72"
+        >
           {EMOJI_LIST.map((emoji) => (
             <button
               key={emoji}
               onClick={() => setTextInput(prev => prev + emoji)}
+              aria-label={`Insert ${emoji} emoji`}
               className="text-xl hover:bg-gray-100 dark:hover:bg-[#2a3942] p-1.5 rounded transition-transform hover:scale-110"
             >
               {emoji}
@@ -433,6 +450,8 @@ export default function ChatArea() {
               onClick={() => { setShowEmojiPicker(!showEmojiPicker); setShowAttachmentMenu(false); }}
               className="p-2 text-[#54656f] dark:text-[#8696a0] hover:text-gray-700 dark:hover:text-[#e9edef] rounded-full transition-colors"
               title="Emoji"
+              aria-label="Toggle emoji picker"
+              aria-expanded={showEmojiPicker}
             >
               <Smile className="w-6 h-6" />
             </button>
@@ -441,6 +460,8 @@ export default function ChatArea() {
               onClick={() => { setShowAttachmentMenu(!showAttachmentMenu); setShowEmojiPicker(false); }}
               className="p-2 text-[#54656f] dark:text-[#8696a0] hover:text-gray-700 dark:hover:text-[#e9edef] rounded-full transition-colors"
               title="Attach File"
+              aria-label="Toggle attachment menu"
+              aria-expanded={showAttachmentMenu}
             >
               <Paperclip className="w-6 h-6" />
             </button>
