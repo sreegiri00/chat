@@ -63,4 +63,15 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Your Name')).toBeInTheDocument();
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument();
   });
+
+  it('renders accessibility labels and tabs correctly in sidebar', () => {
+    render(<App />);
+    expect(screen.getByRole('button', { name: 'Profile Settings' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Status Updates' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'New Chat' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Menu' })).toBeInTheDocument();
+    expect(screen.getByRole('tablist', { name: 'Filter chats' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'All' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('tab', { name: 'Unread' })).toHaveAttribute('aria-selected', 'false');
+  });
 });
