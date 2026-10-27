@@ -73,7 +73,8 @@ export default function Sidebar() {
         {/* User Profile Avatar */}
         <button
           onClick={() => setActiveDrawer('profile')}
-          className="relative rounded-full focus:outline-none hover:opacity-90 transition-opacity"
+          className="relative rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a884] hover:opacity-90 transition-opacity"
+          aria-label="Profile Settings"
           title="Profile Settings"
         >
           <img
@@ -88,7 +89,8 @@ export default function Sidebar() {
           {/* Status Tab */}
           <button
             onClick={() => setActiveStatusViewer(statuses[1] || statuses[0])}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] relative transition-colors"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] relative transition-colors focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none"
+            aria-label="Status Updates"
             title="Status Updates"
           >
             <CircleDashed className="w-5 h-5" />
@@ -100,7 +102,8 @@ export default function Sidebar() {
           {/* Theme Switcher */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none"
+            aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
             {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -109,7 +112,8 @@ export default function Sidebar() {
           {/* New Chat */}
           <button
             onClick={() => setActiveDrawer('new_chat')}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none"
+            aria-label="New Chat"
             title="New Chat"
           >
             <MessageSquare className="w-5 h-5" />
@@ -119,7 +123,10 @@ export default function Sidebar() {
           <div className="relative">
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none"
+              aria-label="Menu"
+              aria-expanded={showMenu}
+              aria-haspopup="true"
               title="Menu"
             >
               <MoreVertical className="w-5 h-5" />
@@ -159,6 +166,7 @@ export default function Sidebar() {
           <input
             type="text"
             placeholder="Search or start new chat"
+            aria-label="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
@@ -166,7 +174,7 @@ export default function Sidebar() {
         </div>
 
         {/* Filter Pills */}
-        <div className="flex items-center space-x-2 overflow-x-auto pb-1 text-xs">
+        <div className="flex items-center space-x-2 overflow-x-auto pb-1 text-xs" role="tablist" aria-label="Filter chats">
           {[
             { id: 'all', label: 'All' },
             { id: 'unread', label: 'Unread' },
@@ -175,8 +183,10 @@ export default function Sidebar() {
           ].map(tab => (
             <button
               key={tab.id}
+              role="tab"
+              aria-selected={activeTabFilter === tab.id}
               onClick={() => setActiveTabFilter(tab.id)}
-              className={`px-3 py-1 rounded-full font-medium transition-colors ${
+              className={`px-3 py-1 rounded-full font-medium transition-colors focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none ${
                 activeTabFilter === tab.id
                   ? 'bg-[#e7fce3] dark:bg-[#0a332c] text-[#008069] dark:text-[#00a884]'
                   : 'bg-[#f0f2f5] dark:bg-[#202c33] text-[#54656f] dark:text-[#8696a0] hover:bg-gray-200 dark:hover:bg-[#2a3942]'
@@ -271,15 +281,17 @@ export default function Sidebar() {
                       <div className="hidden group-hover:flex items-center space-x-1 pl-1">
                         <button
                           onClick={(e) => { e.stopPropagation(); togglePinChat(contact.id); }}
+                          aria-label={contact.pinned ? `Unpin chat with ${contact.name}` : `Pin chat with ${contact.name}`}
                           title={contact.pinned ? 'Unpin chat' : 'Pin chat'}
-                          className="p-1 hover:text-emerald-500 text-gray-400 dark:text-[#8696a0]"
+                          className="p-1 hover:text-emerald-500 text-gray-400 dark:text-[#8696a0] focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none rounded"
                         >
                           <Pin className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); toggleFavoriteChat(contact.id); }}
+                          aria-label={contact.favorite ? `Remove ${contact.name} from favorites` : `Mark ${contact.name} as favorite`}
                           title={contact.favorite ? 'Remove from favorites' : 'Mark as favorite'}
-                          className="p-1 hover:text-amber-400 text-gray-400 dark:text-[#8696a0]"
+                          className="p-1 hover:text-amber-400 text-gray-400 dark:text-[#8696a0] focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none rounded"
                         >
                           <Star className={`w-3.5 h-3.5 ${contact.favorite ? 'fill-amber-400 text-amber-400' : ''}`} />
                         </button>
