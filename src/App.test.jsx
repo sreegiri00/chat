@@ -63,4 +63,28 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Your Name')).toBeInTheDocument();
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument();
   });
+
+  it('has accessible aria-labels on icon buttons in sidebar and chat area', () => {
+    render(<App />);
+
+    // Check Sidebar header action buttons
+    expect(screen.getByRole('button', { name: 'Profile Settings' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Status Updates' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Switch to (Light|Dark) Mode/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'New Chat' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Menu' })).toBeInTheDocument();
+
+    // Select a contact to open chat area
+    const botContacts = screen.getAllByText('WhatsApp AI Assistant');
+    fireEvent.click(botContacts[0]);
+
+    // Check ChatArea action buttons
+    expect(screen.getByRole('button', { name: 'Video Call' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Voice Call' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Search in Chat' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Contact Info' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Emoji' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Attach File' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Voice Recording' })).toBeInTheDocument();
+  });
 });
