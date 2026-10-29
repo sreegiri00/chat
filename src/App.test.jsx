@@ -29,6 +29,20 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
+  it('provides accessible filter pills for chat filtering', () => {
+    render(<App />);
+    const allFilterBtn = screen.getByRole('button', { name: 'Filter by All chats' });
+    const unreadFilterBtn = screen.getByRole('button', { name: 'Filter by Unread chats' });
+
+    expect(allFilterBtn).toHaveAttribute('aria-pressed', 'true');
+    expect(unreadFilterBtn).toHaveAttribute('aria-pressed', 'false');
+
+    fireEvent.click(unreadFilterBtn);
+
+    expect(allFilterBtn).toHaveAttribute('aria-pressed', 'false');
+    expect(unreadFilterBtn).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('allows selecting a contact and sending a text message', () => {
     render(<App />);
 

@@ -176,7 +176,9 @@ export default function Sidebar() {
             <button
               key={tab.id}
               onClick={() => setActiveTabFilter(tab.id)}
-              className={`px-3 py-1 rounded-full font-medium transition-colors ${
+              aria-pressed={activeTabFilter === tab.id}
+              aria-label={`Filter by ${tab.label} chats`}
+              className={`px-3 py-1 rounded-full font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a884] ${
                 activeTabFilter === tab.id
                   ? 'bg-[#e7fce3] dark:bg-[#0a332c] text-[#008069] dark:text-[#00a884]'
                   : 'bg-[#f0f2f5] dark:bg-[#202c33] text-[#54656f] dark:text-[#8696a0] hover:bg-gray-200 dark:hover:bg-[#2a3942]'
