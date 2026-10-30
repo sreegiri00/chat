@@ -75,6 +75,7 @@ export default function Sidebar() {
           onClick={() => setActiveDrawer('profile')}
           className="relative rounded-full focus:outline-none hover:opacity-90 transition-opacity"
           title="Profile Settings"
+          aria-label="Profile settings"
         >
           <img
             src={userProfile.avatar}
@@ -90,6 +91,7 @@ export default function Sidebar() {
             onClick={() => setActiveStatusViewer(statuses[1] || statuses[0])}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] relative transition-colors"
             title="Status Updates"
+            aria-label="Status updates"
           >
             <CircleDashed className="w-5 h-5" />
             {hasUnreadStatus && (
@@ -102,6 +104,7 @@ export default function Sidebar() {
             onClick={() => setDarkMode(!darkMode)}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
             {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
@@ -111,6 +114,7 @@ export default function Sidebar() {
             onClick={() => setActiveDrawer('new_chat')}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title="New Chat"
+            aria-label="New chat"
           >
             <MessageSquare className="w-5 h-5" />
           </button>
@@ -121,6 +125,7 @@ export default function Sidebar() {
               onClick={() => setShowMenu(!showMenu)}
               className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
               title="Menu"
+              aria-label="Menu"
             >
               <MoreVertical className="w-5 h-5" />
             </button>
@@ -272,6 +277,7 @@ export default function Sidebar() {
                         <button
                           onClick={(e) => { e.stopPropagation(); togglePinChat(contact.id); }}
                           title={contact.pinned ? 'Unpin chat' : 'Pin chat'}
+                          aria-label={contact.pinned ? 'Unpin chat' : 'Pin chat'}
                           className="p-1 hover:text-emerald-500 text-gray-400 dark:text-[#8696a0]"
                         >
                           <Pin className="w-3.5 h-3.5" />
@@ -279,6 +285,7 @@ export default function Sidebar() {
                         <button
                           onClick={(e) => { e.stopPropagation(); toggleFavoriteChat(contact.id); }}
                           title={contact.favorite ? 'Remove from favorites' : 'Mark as favorite'}
+                          aria-label={contact.favorite ? 'Remove from favorites' : 'Mark as favorite'}
                           className="p-1 hover:text-amber-400 text-gray-400 dark:text-[#8696a0]"
                         >
                           <Star className={`w-3.5 h-3.5 ${contact.favorite ? 'fill-amber-400 text-amber-400' : ''}`} />
