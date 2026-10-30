@@ -100,6 +100,7 @@ export default function Drawers() {
         <button
           onClick={() => setActiveDrawer(null)}
           className="p-1 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-colors mb-0.5"
+          aria-label="Close drawer"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
@@ -144,14 +145,14 @@ export default function Drawers() {
                     onChange={(e) => setEditName(e.target.value)}
                     className="flex-1 bg-gray-100 dark:bg-[#202c33] px-3 py-1.5 rounded text-sm focus:outline-none"
                   />
-                  <button onClick={handleSaveProfile} className="text-[#00a884] p-1">
+                  <button onClick={handleSaveProfile} className="text-[#00a884] p-1" aria-label="Save name">
                     <Check className="w-5 h-5" />
                   </button>
                 </div>
               ) : (
                 <div className="flex justify-between items-center">
                   <span className="text-base font-normal">{userProfile.name}</span>
-                  <button onClick={() => setIsEditingName(true)} className="text-gray-400 hover:text-emerald-500">
+                  <button onClick={() => setIsEditingName(true)} className="text-gray-400 hover:text-emerald-500" aria-label="Edit name">
                     <Edit2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -173,14 +174,14 @@ export default function Drawers() {
                     onChange={(e) => setEditAbout(e.target.value)}
                     className="flex-1 bg-gray-100 dark:bg-[#202c33] px-3 py-1.5 rounded text-sm focus:outline-none"
                   />
-                  <button onClick={handleSaveProfile} className="text-[#00a884] p-1">
+                  <button onClick={handleSaveProfile} className="text-[#00a884] p-1" aria-label="Save about">
                     <Check className="w-5 h-5" />
                   </button>
                 </div>
               ) : (
                 <div className="flex justify-between items-center">
                   <span className="text-sm">{userProfile.about}</span>
-                  <button onClick={() => setIsEditingAbout(true)} className="text-gray-400 hover:text-emerald-500">
+                  <button onClick={() => setIsEditingAbout(true)} className="text-gray-400 hover:text-emerald-500" aria-label="Edit about">
                     <Edit2 className="w-4 h-4" />
                   </button>
                 </div>

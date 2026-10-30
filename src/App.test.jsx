@@ -63,4 +63,21 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Your Name')).toBeInTheDocument();
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument();
   });
+
+  it('renders aria-label attributes on sidebar and chat header icon buttons', () => {
+    render(<App />);
+    expect(screen.getByRole('button', { name: 'Profile settings' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Status updates' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'New chat' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Menu' })).toBeInTheDocument();
+
+    // Select a contact to check chat header buttons
+    const botContacts = screen.getAllByText('WhatsApp AI Assistant');
+    fireEvent.click(botContacts[0]);
+
+    expect(screen.getByRole('button', { name: 'Video Call' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Voice Call' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Search in Chat' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Contact Info' })).toBeInTheDocument();
+  });
 });
