@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   MessageSquare,
   CircleDashed,
@@ -12,7 +12,8 @@ import {
   Moon,
   Sun,
   Plus,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
@@ -37,6 +38,19 @@ export default function Sidebar() {
   } = useChat();
 
   const [showMenu, setShowMenu] = useState(false);
+  const searchInputRef = useRef(null);
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    searchInputRef.current?.focus();
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === 'Escape' && searchQuery) {
+      e.stopPropagation();
+      handleClearSearch();
+    }
+  };
 
   // Filter contacts based on search query & selected tab
   const filteredContacts = contacts.filter(contact => {
@@ -157,12 +171,25 @@ export default function Sidebar() {
         <div className="relative flex items-center bg-[#f0f2f5] dark:bg-[#202c33] rounded-lg px-3 py-1.5">
           <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" />
           <input
+            ref={searchInputRef}
             type="text"
+            aria-label="Search or start new chat"
             placeholder="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              onClick={handleClearSearch}
+              className="p-1 rounded-full text-[#54656f] dark:text-[#8696a0] hover:text-gray-700 dark:hover:text-[#e9edef] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a884] transition-colors"
+              aria-label="Clear search"
+              title="Clear search"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Filter Pills */}
