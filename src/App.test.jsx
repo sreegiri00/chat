@@ -29,6 +29,30 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
+  it('allows clearing search via clear button and Escape key', () => {
+    render(<App />);
+    const searchInput = screen.getByRole('textbox', { name: 'Search or start new chat' });
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+
+    // Type query
+    fireEvent.change(searchInput, { target: { value: 'Sarah' } });
+    const clearButton = screen.getByRole('button', { name: 'Clear search' });
+    expect(clearButton).toBeInTheDocument();
+
+    // Clicking clear button clears query and focuses search input
+    fireEvent.click(clearButton);
+    expect(searchInput.value).toBe('');
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+    expect(document.activeElement).toBe(searchInput);
+
+    // Escape key also clears query
+    fireEvent.change(searchInput, { target: { value: 'Marcus' } });
+    expect(screen.getByRole('button', { name: 'Clear search' })).toBeInTheDocument();
+    fireEvent.keyDown(searchInput, { key: 'Escape' });
+    expect(searchInput.value).toBe('');
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+  });
+
   it('allows selecting a contact and sending a text message', () => {
     render(<App />);
 
