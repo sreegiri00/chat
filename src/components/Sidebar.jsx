@@ -12,7 +12,8 @@ import {
   Moon,
   Sun,
   Plus,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
@@ -154,15 +155,32 @@ export default function Sidebar() {
 
       {/* Search Bar & Filter Tabs */}
       <div className="p-2 bg-white dark:bg-[#111b21] border-b border-gray-100 dark:border-[#222d34] space-y-2">
-        <div className="relative flex items-center bg-[#f0f2f5] dark:bg-[#202c33] rounded-lg px-3 py-1.5">
+        <div className="relative flex items-center bg-[#f0f2f5] dark:bg-[#202c33] rounded-lg px-3 py-1.5 focus-within:ring-1 focus-within:ring-[#00a884]">
           <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" />
           <input
             type="text"
+            aria-label="Search or start new chat"
             placeholder="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape' && searchQuery) {
+                setSearchQuery('');
+              }
+            }}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search"
+              title="Clear search"
+              className="p-0.5 ml-1 text-[#54656f] dark:text-[#8696a0] hover:text-gray-800 dark:hover:text-[#e9edef] rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a884] transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Filter Pills */}
@@ -193,7 +211,20 @@ export default function Sidebar() {
         {sortedContacts.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-8 text-center text-[#54656f] dark:text-[#8696a0]">
             <p className="text-sm font-medium">No chats found</p>
-            <p className="text-xs mt-1">Try searching for something else or create a new chat.</p>
+            {searchQuery ? (
+              <>
+                <p className="text-xs mt-1">No chats matching &ldquo;{searchQuery}&rdquo;</p>
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="mt-3 text-xs font-semibold text-[#00a884] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a884] rounded px-2 py-1"
+                >
+                  Clear search
+                </button>
+              </>
+            ) : (
+              <p className="text-xs mt-1">Try searching for something else or create a new chat.</p>
+            )}
           </div>
         ) : (
           sortedContacts.map((contact) => {

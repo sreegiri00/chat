@@ -21,11 +21,40 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
-  it('allows filtering contacts using search bar', () => {
+  it('allows filtering contacts using search bar and clearing via clear button', () => {
     render(<App />);
-    const searchInput = screen.getByPlaceholderText('Search or start new chat');
-    fireEvent.change(searchInput, { target: { value: 'Sarah' } });
+    const searchInput = screen.getByRole('textbox', { name: 'Search or start new chat' });
+    fireEvent.change(searchInput, { target: { value: 'Elena' } });
 
+    expect(screen.getByText('Elena Rostova')).toBeInTheDocument();
+    expect(screen.queryByText('Sarah Connor')).not.toBeInTheDocument();
+
+    const clearButton = screen.getByRole('button', { name: 'Clear search' });
+    fireEvent.click(clearButton);
+
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
+  });
+
+  it('allows clearing search using Escape key and via empty state CTA', () => {
+    render(<App />);
+    const searchInput = screen.getByRole('textbox', { name: 'Search or start new chat' });
+
+    // Test Escape key
+    fireEvent.change(searchInput, { target: { value: 'Elena' } });
+    expect(screen.getByRole('button', { name: 'Clear search' })).toBeInTheDocument();
+    fireEvent.keyDown(searchInput, { key: 'Escape' });
+    expect(searchInput.value).toBe('');
+
+    // Test Empty state CTA
+    fireEvent.change(searchInput, { target: { value: 'NonexistentContactXYZ' } });
+    expect(screen.getByText('No chats found')).toBeInTheDocument();
+    expect(screen.getByText(/No chats matching/)).toBeInTheDocument();
+
+    // The empty state CTA has text "Clear search"
+    const clearCta = screen.getByText('Clear search', { selector: 'button' });
+    fireEvent.click(clearCta);
+    expect(searchInput.value).toBe('');
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
