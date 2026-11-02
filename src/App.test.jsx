@@ -29,6 +29,41 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
+  it('allows clearing search via clear button', () => {
+    render(<App />);
+    const searchInput = screen.getByLabelText('Search or start new chat');
+    fireEvent.change(searchInput, { target: { value: 'Sarah' } });
+
+    const clearBtn = screen.getByRole('button', { name: 'Clear search' });
+    fireEvent.click(clearBtn);
+
+    expect(searchInput.value).toBe('');
+  });
+
+  it('allows clearing search via Escape key', () => {
+    render(<App />);
+    const searchInput = screen.getByLabelText('Search or start new chat');
+    fireEvent.change(searchInput, { target: { value: 'Sarah' } });
+
+    fireEvent.keyDown(searchInput, { key: 'Escape' });
+    expect(searchInput.value).toBe('');
+  });
+
+  it('shows clear search helper when no chats match', () => {
+    render(<App />);
+    const searchInput = screen.getByLabelText('Search or start new chat');
+    fireEvent.change(searchInput, { target: { value: 'NonexistentContact12345' } });
+
+    expect(screen.getByText('No chats found')).toBeInTheDocument();
+    const clearButtons = screen.getAllByRole('button', { name: 'Clear search' });
+    // Expect both the input clear icon button and the empty state CTA button
+    expect(clearButtons.length).toBe(2);
+    // Click the empty state CTA button (the second one)
+    fireEvent.click(clearButtons[1]);
+
+    expect(searchInput.value).toBe('');
+  });
+
   it('allows selecting a contact and sending a text message', () => {
     render(<App />);
 
