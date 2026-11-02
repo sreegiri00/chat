@@ -12,7 +12,8 @@ import {
   Moon,
   Sun,
   Plus,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
@@ -158,11 +159,25 @@ export default function Sidebar() {
           <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" />
           <input
             type="text"
+            aria-label="Search or start new chat"
             placeholder="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setSearchQuery('');
+            }}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search"
+              title="Clear search"
+              className="p-0.5 rounded-full text-[#54656f] dark:text-[#8696a0] hover:text-gray-900 dark:hover:text-[#e9edef] focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none ml-1 flex-shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Filter Pills */}
@@ -194,6 +209,14 @@ export default function Sidebar() {
           <div className="flex flex-col items-center justify-center p-8 text-center text-[#54656f] dark:text-[#8696a0]">
             <p className="text-sm font-medium">No chats found</p>
             <p className="text-xs mt-1">Try searching for something else or create a new chat.</p>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="mt-3 px-3 py-1 text-xs font-medium text-[#008069] dark:text-[#00a884] bg-[#e7fce3] dark:bg-[#0a332c] hover:bg-[#d5f7ce] dark:hover:bg-[#10433a] rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         ) : (
           sortedContacts.map((contact) => {
