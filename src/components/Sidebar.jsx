@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   MessageSquare,
   CircleDashed,
@@ -12,7 +12,8 @@ import {
   Moon,
   Sun,
   Plus,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
@@ -37,6 +38,12 @@ export default function Sidebar() {
   } = useChat();
 
   const [showMenu, setShowMenu] = useState(false);
+  const searchInputRef = useRef(null);
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    searchInputRef.current?.focus();
+  };
 
   // Filter contacts based on search query & selected tab
   const filteredContacts = contacts.filter(contact => {
@@ -157,12 +164,29 @@ export default function Sidebar() {
         <div className="relative flex items-center bg-[#f0f2f5] dark:bg-[#202c33] rounded-lg px-3 py-1.5">
           <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" />
           <input
+            ref={searchInputRef}
             type="text"
             placeholder="Search or start new chat"
+            aria-label="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape' && searchQuery) {
+                handleClearSearch();
+              }
+            }}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              onClick={handleClearSearch}
+              aria-label="Clear search"
+              title="Clear search"
+              className="p-0.5 text-[#54656f] dark:text-[#8696a0] hover:text-gray-800 dark:hover:text-white rounded-full transition-colors flex-shrink-0 ml-1"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Filter Pills */}
@@ -193,7 +217,16 @@ export default function Sidebar() {
         {sortedContacts.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-8 text-center text-[#54656f] dark:text-[#8696a0]">
             <p className="text-sm font-medium">No chats found</p>
-            <p className="text-xs mt-1">Try searching for something else or create a new chat.</p>
+            {searchQuery ? (
+              <button
+                onClick={handleClearSearch}
+                className="text-xs mt-2 text-[#00a884] hover:underline font-medium"
+              >
+                Clear search
+              </button>
+            ) : (
+              <p className="text-xs mt-1">Try searching for something else or create a new chat.</p>
+            )}
           </div>
         ) : (
           sortedContacts.map((contact) => {

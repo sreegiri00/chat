@@ -29,6 +29,28 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
+  it('allows clearing search via clear button and escape key', () => {
+    render(<App />);
+    const searchInput = screen.getByPlaceholderText('Search or start new chat');
+
+    // 1. Filter with non-matching term to show empty state
+    fireEvent.change(searchInput, { target: { value: 'NonexistentContact123' } });
+    expect(screen.getByText('No chats found')).toBeInTheDocument();
+    const clearButtons = screen.getAllByRole('button', { name: /clear search/i });
+    expect(clearButtons.length).toBe(2); // One in search bar, one in empty state
+
+    // 2. Clear via the search bar clear button (title="Clear search")
+    fireEvent.click(clearButtons[0]);
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
+
+    // 3. Filter again and clear with Escape key
+    fireEvent.change(searchInput, { target: { value: 'Sarah' } });
+    fireEvent.keyDown(searchInput, { key: 'Escape', code: 'Escape' });
+    expect(searchInput.value).toBe('');
+    expect(screen.getAllByText('WhatsApp AI Assistant').length).toBeGreaterThan(0);
+  });
+
   it('allows selecting a contact and sending a text message', () => {
     render(<App />);
 
