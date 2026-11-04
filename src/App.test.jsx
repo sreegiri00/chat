@@ -21,12 +21,21 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
-  it('allows filtering contacts using search bar', () => {
+  it('allows filtering contacts and clearing search query', () => {
     render(<App />);
     const searchInput = screen.getByPlaceholderText('Search or start new chat');
     fireEvent.change(searchInput, { target: { value: 'Sarah' } });
 
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
+    expect(screen.queryByText('Frontend Dev Team')).not.toBeInTheDocument();
+
+    const clearButton = screen.getByRole('button', { name: 'Clear search' });
+    expect(clearButton).toBeInTheDocument();
+    fireEvent.click(clearButton);
+
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
+    expect(screen.getByText('🚀 Frontend Dev Team')).toBeInTheDocument();
   });
 
   it('allows selecting a contact and sending a text message', () => {

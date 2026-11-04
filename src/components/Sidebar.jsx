@@ -12,7 +12,8 @@ import {
   Moon,
   Sun,
   Plus,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
@@ -158,11 +159,28 @@ export default function Sidebar() {
           <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" />
           <input
             type="text"
+            aria-label="Search or start new chat"
             placeholder="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setSearchQuery('');
+              }
+            }}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search"
+              title="Clear search"
+              className="p-1 text-[#54656f] hover:text-gray-700 dark:text-[#8696a0] dark:hover:text-gray-300 rounded-full transition-colors focus:outline-none"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Filter Pills */}
