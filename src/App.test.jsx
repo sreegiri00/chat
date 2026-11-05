@@ -63,4 +63,18 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Your Name')).toBeInTheDocument();
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument();
   });
+
+  it('provides accessible ARIA labels for icon-only action buttons in chat area', () => {
+    render(<App />);
+    const botContacts = screen.getAllByText('WhatsApp AI Assistant');
+    fireEvent.click(botContacts[0]);
+
+    expect(screen.getByRole('button', { name: 'Video Call' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Voice Call' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Search in Chat' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Contact Info' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Emoji' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Attach File' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Voice Recording' })).toBeInTheDocument();
+  });
 });
