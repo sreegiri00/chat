@@ -29,6 +29,36 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
+  it('allows clearing search via the clear button and escape key', () => {
+    render(<App />);
+    const searchInput = screen.getByRole('textbox', { name: 'Search or start new chat' });
+
+    // Test clearing via clear button
+    fireEvent.change(searchInput, { target: { value: 'Sarah' } });
+    expect(screen.queryByText('🚀 Frontend Dev Team')).not.toBeInTheDocument();
+
+    const clearButton = screen.getByRole('button', { name: 'Clear search' });
+    fireEvent.click(clearButton);
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('🚀 Frontend Dev Team')).toBeInTheDocument();
+
+    // Test clearing via Escape key
+    fireEvent.change(searchInput, { target: { value: 'NonexistentContact12345' } });
+    expect(screen.getByText('No chats found')).toBeInTheDocument();
+    fireEvent.keyDown(searchInput, { key: 'Escape' });
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('🚀 Frontend Dev Team')).toBeInTheDocument();
+
+    // Test clearing via empty state CTA button
+    fireEvent.change(searchInput, { target: { value: 'NonexistentContact12345' } });
+    const clearButtons = screen.getAllByRole('button', { name: 'Clear search' });
+    // First is the icon clear button in the input, second is in empty state
+    expect(clearButtons.length).toBe(2);
+    fireEvent.click(clearButtons[1]);
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('🚀 Frontend Dev Team')).toBeInTheDocument();
+  });
+
   it('allows selecting a contact and sending a text message', () => {
     render(<App />);
 
