@@ -12,7 +12,8 @@ import {
   Moon,
   Sun,
   Plus,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
@@ -73,6 +74,7 @@ export default function Sidebar() {
         {/* User Profile Avatar */}
         <button
           onClick={() => setActiveDrawer('profile')}
+          aria-label="Profile Settings"
           className="relative rounded-full focus:outline-none hover:opacity-90 transition-opacity"
           title="Profile Settings"
         >
@@ -88,6 +90,7 @@ export default function Sidebar() {
           {/* Status Tab */}
           <button
             onClick={() => setActiveStatusViewer(statuses[1] || statuses[0])}
+            aria-label="Status Updates"
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] relative transition-colors"
             title="Status Updates"
           >
@@ -100,6 +103,7 @@ export default function Sidebar() {
           {/* Theme Switcher */}
           <button
             onClick={() => setDarkMode(!darkMode)}
+            aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
@@ -109,6 +113,7 @@ export default function Sidebar() {
           {/* New Chat */}
           <button
             onClick={() => setActiveDrawer('new_chat')}
+            aria-label="New Chat"
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title="New Chat"
           >
@@ -119,6 +124,7 @@ export default function Sidebar() {
           <div className="relative">
             <button
               onClick={() => setShowMenu(!showMenu)}
+              aria-label="Menu"
               className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
               title="Menu"
             >
@@ -158,11 +164,27 @@ export default function Sidebar() {
           <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" />
           <input
             type="text"
+            aria-label="Search or start new chat"
             placeholder="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setSearchQuery('');
+              }
+            }}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search"
+              title="Clear search"
+              className="p-1 rounded-full text-[#54656f] dark:text-[#8696a0] hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Filter Pills */}
@@ -193,7 +215,18 @@ export default function Sidebar() {
         {sortedContacts.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-8 text-center text-[#54656f] dark:text-[#8696a0]">
             <p className="text-sm font-medium">No chats found</p>
-            <p className="text-xs mt-1">Try searching for something else or create a new chat.</p>
+            <p className="text-xs mt-1">
+              {searchQuery ? (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="text-[#008069] dark:text-[#00a884] hover:underline font-medium"
+                >
+                  Clear search
+                </button>
+              ) : (
+                'Try searching for something else or create a new chat.'
+              )}
+            </p>
           </div>
         ) : (
           sortedContacts.map((contact) => {
@@ -271,6 +304,7 @@ export default function Sidebar() {
                       <div className="hidden group-hover:flex items-center space-x-1 pl-1">
                         <button
                           onClick={(e) => { e.stopPropagation(); togglePinChat(contact.id); }}
+                          aria-label={contact.pinned ? 'Unpin chat' : 'Pin chat'}
                           title={contact.pinned ? 'Unpin chat' : 'Pin chat'}
                           className="p-1 hover:text-emerald-500 text-gray-400 dark:text-[#8696a0]"
                         >
@@ -278,6 +312,7 @@ export default function Sidebar() {
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); toggleFavoriteChat(contact.id); }}
+                          aria-label={contact.favorite ? 'Remove from favorites' : 'Mark as favorite'}
                           title={contact.favorite ? 'Remove from favorites' : 'Mark as favorite'}
                           className="p-1 hover:text-amber-400 text-gray-400 dark:text-[#8696a0]"
                         >
