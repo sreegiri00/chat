@@ -12,7 +12,8 @@ import {
   Moon,
   Sun,
   Plus,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
@@ -73,8 +74,9 @@ export default function Sidebar() {
         {/* User Profile Avatar */}
         <button
           onClick={() => setActiveDrawer('profile')}
-          className="relative rounded-full focus:outline-none hover:opacity-90 transition-opacity"
+          className="relative rounded-full focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none hover:opacity-90 transition-opacity"
           title="Profile Settings"
+          aria-label="Profile Settings"
         >
           <img
             src={userProfile.avatar}
@@ -88,8 +90,9 @@ export default function Sidebar() {
           {/* Status Tab */}
           <button
             onClick={() => setActiveStatusViewer(statuses[1] || statuses[0])}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] relative transition-colors"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none relative transition-colors"
             title="Status Updates"
+            aria-label="Status Updates"
           >
             <CircleDashed className="w-5 h-5" />
             {hasUnreadStatus && (
@@ -100,8 +103,9 @@ export default function Sidebar() {
           {/* Theme Switcher */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none transition-colors"
             title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
             {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
@@ -109,8 +113,9 @@ export default function Sidebar() {
           {/* New Chat */}
           <button
             onClick={() => setActiveDrawer('new_chat')}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none transition-colors"
             title="New Chat"
+            aria-label="New Chat"
           >
             <MessageSquare className="w-5 h-5" />
           </button>
@@ -119,8 +124,11 @@ export default function Sidebar() {
           <div className="relative">
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none transition-colors"
               title="Menu"
+              aria-label="Menu"
+              aria-haspopup="true"
+              aria-expanded={showMenu}
             >
               <MoreVertical className="w-5 h-5" />
             </button>
@@ -158,11 +166,27 @@ export default function Sidebar() {
           <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" />
           <input
             type="text"
+            aria-label="Search or start new chat"
             placeholder="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setSearchQuery('');
+              }
+            }}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="p-0.5 ml-1 text-[#54656f] dark:text-[#8696a0] hover:text-gray-900 dark:hover:text-white rounded-full focus-visible:ring-2 focus-visible:ring-[#00a884] focus:outline-none transition-colors"
+              title="Clear search"
+              aria-label="Clear search"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Filter Pills */}
