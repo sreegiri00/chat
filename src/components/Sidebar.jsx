@@ -12,7 +12,8 @@ import {
   Moon,
   Sun,
   Plus,
-  Filter
+  Filter,
+  X
 } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
@@ -75,6 +76,7 @@ export default function Sidebar() {
           onClick={() => setActiveDrawer('profile')}
           className="relative rounded-full focus:outline-none hover:opacity-90 transition-opacity"
           title="Profile Settings"
+          aria-label="Profile Settings"
         >
           <img
             src={userProfile.avatar}
@@ -90,6 +92,7 @@ export default function Sidebar() {
             onClick={() => setActiveStatusViewer(statuses[1] || statuses[0])}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] relative transition-colors"
             title="Status Updates"
+            aria-label="Status Updates"
           >
             <CircleDashed className="w-5 h-5" />
             {hasUnreadStatus && (
@@ -102,6 +105,7 @@ export default function Sidebar() {
             onClick={() => setDarkMode(!darkMode)}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
             {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
@@ -111,6 +115,7 @@ export default function Sidebar() {
             onClick={() => setActiveDrawer('new_chat')}
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
             title="New Chat"
+            aria-label="New Chat"
           >
             <MessageSquare className="w-5 h-5" />
           </button>
@@ -121,6 +126,9 @@ export default function Sidebar() {
               onClick={() => setShowMenu(!showMenu)}
               className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#374248] transition-colors"
               title="Menu"
+              aria-label="Menu"
+              aria-haspopup="true"
+              aria-expanded={showMenu}
             >
               <MoreVertical className="w-5 h-5" />
             </button>
@@ -155,14 +163,30 @@ export default function Sidebar() {
       {/* Search Bar & Filter Tabs */}
       <div className="p-2 bg-white dark:bg-[#111b21] border-b border-gray-100 dark:border-[#222d34] space-y-2">
         <div className="relative flex items-center bg-[#f0f2f5] dark:bg-[#202c33] rounded-lg px-3 py-1.5">
-          <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" />
+          <Search className="w-4 h-4 text-[#54656f] dark:text-[#8696a0] mr-3 flex-shrink-0" aria-hidden="true" />
           <input
             type="text"
             placeholder="Search or start new chat"
+            aria-label="Search or start new chat"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape' && searchQuery) {
+                setSearchQuery('');
+              }
+            }}
             className="w-full bg-transparent text-sm text-gray-900 dark:text-[#d1d7db] placeholder-[#54656f] dark:placeholder-[#8696a0] focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="p-1 rounded-full text-[#54656f] dark:text-[#8696a0] hover:text-gray-700 dark:hover:text-[#e9edef] focus:outline-none"
+              title="Clear search"
+              aria-label="Clear search"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Filter Pills */}
@@ -194,6 +218,14 @@ export default function Sidebar() {
           <div className="flex flex-col items-center justify-center p-8 text-center text-[#54656f] dark:text-[#8696a0]">
             <p className="text-sm font-medium">No chats found</p>
             <p className="text-xs mt-1">Try searching for something else or create a new chat.</p>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="mt-3 px-3 py-1.5 text-xs font-medium text-[#008069] dark:text-[#00a884] bg-[#f0f2f5] dark:bg-[#202c33] hover:bg-gray-200 dark:hover:bg-[#2a3942] rounded-full transition-colors"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         ) : (
           sortedContacts.map((contact) => {
