@@ -29,6 +29,38 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
   });
 
+  it('allows clearing search with the clear button or Escape key', () => {
+    render(<App />);
+    const searchInput = screen.getByPlaceholderText('Search or start new chat');
+
+    // Type in search query
+    fireEvent.change(searchInput, { target: { value: 'Sarah' } });
+    expect(screen.getByText('Sarah Connor')).toBeInTheDocument();
+
+    // Clear button should now be visible and clickable
+    const clearBtn = screen.getByRole('button', { name: 'Clear search' });
+    fireEvent.click(clearBtn);
+
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('🚀 Frontend Dev Team')).toBeInTheDocument();
+
+    // Test Escape key clears search
+    fireEvent.change(searchInput, { target: { value: 'Sarah' } });
+    fireEvent.keyDown(searchInput, { key: 'Escape', code: 'Escape' });
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('🚀 Frontend Dev Team')).toBeInTheDocument();
+
+    // Test empty state clear button (there is both the input clear icon button and the empty state clear button)
+    fireEvent.change(searchInput, { target: { value: 'nonexistent-contact-xyz' } });
+    expect(screen.getByText('No chats found')).toBeInTheDocument();
+    const clearButtons = screen.getAllByRole('button', { name: 'Clear search' });
+    expect(clearButtons.length).toBe(2);
+    // Click the empty state button (second one)
+    fireEvent.click(clearButtons[1]);
+    expect(searchInput.value).toBe('');
+    expect(screen.getByText('🚀 Frontend Dev Team')).toBeInTheDocument();
+  });
+
   it('allows selecting a contact and sending a text message', () => {
     render(<App />);
 
