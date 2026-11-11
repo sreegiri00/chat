@@ -63,4 +63,21 @@ describe('WhatsApp Web Clone Integration Tests', () => {
     expect(screen.getByText('Your Name')).toBeInTheDocument();
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument();
   });
+
+  it('supports accessible labels and escape key navigation for chat popovers', () => {
+    render(<App />);
+
+    // Check accessible buttons in ChatArea
+    const emojiBtn = screen.getByLabelText('Emoji picker');
+    expect(emojiBtn).toHaveAttribute('aria-expanded', 'false');
+
+    // Open emoji picker
+    fireEvent.click(emojiBtn);
+    expect(emojiBtn).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByLabelText('Insert 😀 emoji')).toBeInTheDocument();
+
+    // Close emoji picker using Escape
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByLabelText('Insert 😀 emoji')).not.toBeInTheDocument();
+  });
 });
